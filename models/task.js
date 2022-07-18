@@ -23,7 +23,7 @@ const Task = db.define(
       type: DataTypes.STRING,
     },
   },
-  { tableName: 'task' }
+  { tableName: 'tasks' }
 );
 
 module.exports = Task;
