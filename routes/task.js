@@ -3,12 +3,14 @@ const Task = require('../models/task');
 const Sequelize = require('../models');
 const moment = require('moment');
 //Add a task
-router.post('/add-task', async (req, res) => {
+router.post('/:id/add-task', async (req, res) => {
   try {
     const taskName = req.body.name;
+    const userId = req.params.id;
 
     const addTask = await Task.create({
       name: taskName,
+      user_id: userId,
     });
     res.status(200).send(addTask);
   } catch (error) {
@@ -97,9 +99,14 @@ router.post('/delete-task/:id', async (req, res) => {
 });
 
 //List all tasks
-router.get('/list-tasks', async (req, res) => {
+router.get('/:id/list-tasks', async (req, res) => {
   try {
-    const listTasks = await Task.findAll();
+    const userId = req.params.id;
+    const listTasks = await Task.findAll({
+      where: {
+        user_id: userId,
+      },
+    });
 
     res.status(200).send(listTasks);
   } catch (error) {
