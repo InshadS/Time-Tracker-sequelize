@@ -1,22 +1,19 @@
 const router = require('express').Router({ mergeParams: true });
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
-
+const utils = require('../lib/utils');
 //Register
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const hash = await bcrypt.hash(password, 10);
     const userRegister = await User.create({
       name: name,
       email: email,
-      password: hash,
+      password: await utils.hashPassword(password),
     });
     res.status(201).send(userRegister);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json('User exists!');
   }
 });
 
@@ -31,11 +28,14 @@ router.post('/login', async (req, res) => {
       },
     });
     if (userLogin) {
-      const validPassword = await bcrypt.compare(password, userLogin.password);
+      const validPassword = await utils.comparePassword(
+        password,
+        userLogin.password
+      );
       if (validPassword) {
         res.status(200).json('Valid email and password');
       } else {
-        res.json('Wrong password!');
+        res.status(400).json('Wrong password!');
       }
     } else {
       res.status(404).json('User not found!');
