@@ -2,36 +2,21 @@ const router = require('express').Router({ mergeParams: true });
 const Task = require('../models/task');
 const Sequelize = require('../models');
 const moment = require('moment');
+
 //Add a task
 router.post('/:id/add-task', async (req, res) => {
   try {
     const taskName = req.body.name;
     const userId = req.params.id;
+    const startTime = moment().format();
 
     const addTask = await Task.create({
       name: taskName,
       user_id: userId,
+      start_time: startTime,
     });
+
     res.status(200).send(addTask);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-//Start task
-router.post('/start-task/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const startTime = moment().format();
-
-    const startTask = await Task.findOne({
-      where: {
-        id: id,
-      },
-    });
-    startTask.start_time = startTime;
-    await startTask.save();
-    res.status(200).send(startTask);
   } catch (error) {
     console.error(error.message);
   }
