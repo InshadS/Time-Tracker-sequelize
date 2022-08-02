@@ -1,6 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
 const passport = require('passport');
 const CLIENT_URL = process.env.CLIENT_URL;
+const CLIENT_LOGIN_URL = process.env.CLIENT_LOGIN_URL;
 
 router.get('/login/success', (req, res) => {
   res.status(200).json({
@@ -19,7 +20,7 @@ router.get('/login/failed', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect(CLIENT_URL);
+  res.redirect(CLIENT_LOGIN_URL);
 });
 
 router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
