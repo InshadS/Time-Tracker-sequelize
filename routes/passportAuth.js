@@ -2,6 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const passport = require('passport');
 const CLIENT_URL = process.env.CLIENT_URL;
 const CLIENT_LOGIN_URL = process.env.CLIENT_LOGIN_URL;
+const User = require('../models/passportuser');
 
 router.get('/login/success', (req, res) => {
   res.status(200).json({
@@ -44,5 +45,20 @@ router.get(
     failureRedirect: '/login/failed',
   })
 );
+
+// Get User
+router.get('/:id', async (req, res) => {
+  try {
+    const getUser = await User.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    res.status(200).send(getUser);
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 module.exports = router;
