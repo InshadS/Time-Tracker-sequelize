@@ -19,7 +19,7 @@ const Task = db.define(
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    name: {
+    task: {
       type: DataTypes.STRING,
     },
     start_time: {

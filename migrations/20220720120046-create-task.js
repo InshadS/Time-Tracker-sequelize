@@ -18,7 +18,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      task: {
         type: Sequelize.STRING,
       },
       start_time: {

@@ -6,12 +6,12 @@ const moment = require('moment');
 //Add a task
 router.post('/:id/add-task', async (req, res) => {
   try {
-    const { description } = req.body.name;
+    const task = req.body.name;
     const userId = req.params.id;
     const startTime = moment().format();
 
     const addTask = await Task.create({
-      name: description,
+      task: task,
       user_id: userId,
       start_time: startTime,
     });
@@ -51,7 +51,7 @@ router.post('/end-task/:id', async (req, res) => {
 router.post('/update-task/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const { description } = req.body.name;
+    const task = req.body.name;
 
     const updateTask = await Task.findOne({
       where: {
@@ -59,7 +59,7 @@ router.post('/update-task/:id', async (req, res) => {
       },
     });
 
-    updateTask.name = description;
+    updateTask.task = task;
     await updateTask.save();
     res.status(200).send(updateTask);
   } catch (error) {
