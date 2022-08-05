@@ -1,15 +1,15 @@
 const { DataTypes } = require('sequelize');
 const db = require('../models/index');
-const user = require('./user');
+const passportUsers = require('./passportuser');
 
 const Task = db.define(
   'Task',
   {
     user_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: user,
+        model: passportUsers,
         key: 'id',
       },
     },
@@ -35,8 +35,8 @@ const Task = db.define(
   { tableName: 'tasks', timestamps: false }
 );
 
-Task.belongsTo(user, {
-  as: 'user',
+Task.belongsTo(passportUsers, {
+  as: 'passportUsers',
   foreignKey: 'user_id',
   onDelete: 'cascade',
 });

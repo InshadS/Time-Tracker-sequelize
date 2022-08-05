@@ -3,11 +3,11 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('tasks', {
       user_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: {
-            tableName: 'user',
+            tableName: 'passportUsers',
           },
           key: 'id',
         },
