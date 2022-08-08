@@ -91,6 +91,7 @@ router.get('/:id/list-tasks', async (req, res) => {
       where: {
         user_id: userId,
       },
+      order: [['start_time', 'DESC']],
     });
 
     res.status(200).send(listTasks);
