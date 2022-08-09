@@ -22,10 +22,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       start_time: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
       end_time: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
       task_duration: {
         type: Sequelize.STRING,

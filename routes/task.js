@@ -6,14 +6,15 @@ const moment = require('moment');
 //Add a task
 router.post('/:id/add-task', async (req, res) => {
   try {
-    const task = req.body.name;
+    const { task, start_time, end_time, task_duration } = req.body;
     const userId = req.params.id;
-    const startTime = moment().format();
 
     const addTask = await Task.create({
       task: task,
       user_id: userId,
-      start_time: startTime,
+      start_time: start_time,
+      end_time: end_time,
+      task_duration: task_duration,
     });
 
     res.status(200).send(addTask);
@@ -23,29 +24,29 @@ router.post('/:id/add-task', async (req, res) => {
 });
 
 //End task
-router.post('/end-task/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const endTime = moment().format();
+// router.post('/end-task/:id', async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const endTime = moment().format();
 
-    const endTask = await Task.findOne({
-      where: {
-        id: id,
-      },
-    });
-    endTask.end_time = endTime;
-    await endTask.save();
+//     const endTask = await Task.findOne({
+//       where: {
+//         id: id,
+//       },
+//     });
+//     endTask.end_time = endTime;
+//     await endTask.save();
 
-    //Task duration
-    const taskDuration = await Sequelize.query(
-      `UPDATE tasks SET task_duration = AGE(end_time,start_time) WHERE id=${id} RETURNING *`
-    );
+//     //Task duration
+//     const taskDuration = await Sequelize.query(
+//       `UPDATE tasks SET task_duration = AGE(end_time,start_time) WHERE id=${id} RETURNING *`
+//     );
 
-    res.status(200).send(taskDuration);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+//     res.status(200).send(taskDuration);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
 
 //Update task
 router.post('/update-task/:id', async (req, res) => {

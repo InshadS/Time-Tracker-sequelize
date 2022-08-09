@@ -23,10 +23,10 @@ const Task = db.define(
       type: DataTypes.STRING,
     },
     start_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
     },
     end_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
     },
     task_duration: {
       type: DataTypes.STRING,
