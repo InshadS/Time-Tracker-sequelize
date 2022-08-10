@@ -52,7 +52,7 @@ router.post('/:id/add-task', async (req, res) => {
 router.post('/update-task/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const task = req.body.name;
+    const { task } = req.body;
 
     const updateTask = await Task.findOne({
       where: {
