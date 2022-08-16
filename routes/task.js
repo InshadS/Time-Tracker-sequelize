@@ -2,6 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const Task = require('../models/task');
 const Sequelize = require('../models');
 const moment = require('moment');
+const optimizelyClient = require('../optimizely');
 
 //Add a task
 router.post('/:id/add-task', async (req, res) => {
@@ -73,12 +74,19 @@ router.post('/delete-task/:id', async (req, res) => {
   try {
     const id = req.params.id;
 
-    const deleteTask = await Task.destroy({
-      where: {
-        id: id,
-      },
-    });
-    res.status(200).send('task deleted');
+    const enabled = optimizelyClient.isFeatureEnabled(
+      'optimize-test',
+      'user123'
+    );
+    const doDelete = enabled
+      ? await Task.destroy({
+          where: {
+            id: id,
+          },
+        })
+      : res.send('cannot delete');
+
+    res.status(200).send(doDelete);
   } catch (error) {
     console.error(error.message);
   }
@@ -88,6 +96,7 @@ router.post('/delete-task/:id', async (req, res) => {
 router.get('/:id/list-tasks', async (req, res) => {
   try {
     const userId = req.params.id;
+
     const listTasks = await Task.findAll({
       where: {
         user_id: userId,
