@@ -78,15 +78,17 @@ router.post('/delete-task/:id', async (req, res) => {
       'optimize-test',
       'user123'
     );
-    const doDelete = enabled
-      ? await Task.destroy({
-          where: {
-            id: id,
-          },
-        })
-      : res.send('cannot delete');
+    if (enabled) {
+      const doDelete = await Task.destroy({
+        where: {
+          id: id,
+        },
+      });
 
-    res.status(200).send(doDelete);
+      res.status(200).send(doDelete);
+    } else {
+      res.status(400).send('Not available');
+    }
   } catch (error) {
     console.error(error.message);
   }
