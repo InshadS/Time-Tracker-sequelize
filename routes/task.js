@@ -88,11 +88,18 @@ router.post('/delete-task/:id', async (req, res) => {
 router.get('/:id/list-tasks', async (req, res) => {
   try {
     const userId = req.params.id;
+
+    const page = req.query.page;
+    const size = req.query.size;
+
     const listTasks = await Task.findAll({
       where: {
         user_id: userId,
       },
       order: [['start_time', 'DESC']],
+      limit: size || 10,
+      offset: (+(page || 1) - 1) * (size || 10),
+      distinct: true,
     });
 
     res.status(200).send(listTasks);
